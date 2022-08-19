@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!--DATABASE CONNECTION SETTINGS-->
+        <property name="hmd2ddl.auto">update</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/hibernate</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root_password</property>
+        <!--SQL DIALECT-->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <!--ECHO ALL EXECUTED SQL TO STANDARD OUT-->
+        <property name="show_sql">true</property>
+        
+        <!--CLASS MAPPINGS-->
+        <mapping resource="Cart.hbm.xml"/>
+         <mapping resource="Item.hbm.xml"/>
+        
+        
+    </session-factory>
+</hibernate-configuration>
