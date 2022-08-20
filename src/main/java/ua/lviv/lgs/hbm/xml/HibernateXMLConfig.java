@@ -1,44 +1,54 @@
 package ua.lviv.lgs.hbm.xml;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.imageio.spi.ServiceRegistry;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import javax.transaction.Transaction;
 
-import org.hibernate.*;
-import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.*;
-
-
-
-
-
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 public class HibernateXMLConfig {
-public static void main(String[] args) {
-	Configuration configuration = new Configuration().configure("hibernate.cnf.xml");
+public static void main(String[] args) throws SecurityException, RollbackException, HeuristicMixedException, HeuristicRollbackException, SystemException {
+	
+	Item iphone = new Item();
+	iphone.setPrice(100); iphone.setDescription("iPhone");
+	
+	Item ipod = new Item();
+	ipod.setPrice(50); ipod.setDescription("iPod");
+	
+	Cart cart = new Cart();
+	cart.setTotal(150);
+	
+	Cart cart1 = new Cart();
+	cart1.setTotal(100);
+	
+	Set<Cart> cartSet = new HashSet<Cart>();
+	cartSet.add(cart);cartSet.add(cart1);
+	
+	Set<Cart> cartSet1 = new HashSet<Cart>();
+	cartSet1.add(cart);
+	
+	iphone.setCarts(cartSet1);
+	ipod.setCarts(cartSet);
+	
+	
+	
+	
+	SessionFactory sessionFactory = null;
+	sessionFactory = HibernateUTIL.getSessionFactory();
+	Session session = sessionFactory.getCurrentSession();
+	Transaction tx = (Transaction) session.beginTransaction();
+	session.save(iphone);
+	session.save(ipod);
+	tx.commit();
+	sessionFactory.close();
+	
 
-		
-	ServiceRegistryBuilder registry = new ServiceRegistryBuilder();
-	registry.applySettings(configuration.getProperties());
-	org.hibernate.service.ServiceRegistry serviceRegistry =  registry.buildServiceRegistry();
-	SessionFactory sessionFactory = configuration.buildSessionFactory((org.hibernate.service.ServiceRegistry) serviceRegistry);
-		
-		Session session = sessionFactory.openSession();
-		Transaction transaction = session.beginTransaction();
-		
-		Cart cart = new Cart(23, "Roman","Sukhai" );
-		Item item1 = new Item(1,"Sausage");
-		Item item2 = new Item(1,"Fruit");
-		Item item3 = new Item(1,"Vagetable");
-		Item item4 = new Item(1,"Soup");
-		cart.setSet(new HashSet<>(Arrays.asList(item1,item2,item3,item4)));
-		
-		
-		session.persist(cart);
-		transaction.commit();
-		session.close();
 }
+	
 }

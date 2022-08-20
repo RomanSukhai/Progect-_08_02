@@ -4,40 +4,54 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 public class Item {
-	private Integer id ;
-	private String total;
-	private Set<Cart> set = new HashSet<Cart>();
-	public Item() {
-		
-	}
-	public Item(Integer id, String total) {
-		super();
-		this.id = id;
-		this.total = total;
-	}
-	public Integer getId() {
+
+	private long id;
+	private double price;
+	private String description;
+
+	private Set<Cart> carts;
+	
+	public long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+
+	public void setId(long id) {
 		this.id = id;
 	}
-	public String getTotal() {
-		return total;
+
+	public double getPrice() {
+		return price;
 	}
-	public void setTotal(String total) {
-		this.total = total;
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
-	public Set<Cart> getSet() {
-		return set;
+
+	public String getDescription() {
+		return description;
 	}
-	public void setSet(Set<Cart> set) {
-		this.set = set;
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
+
+	public Set<Cart> getCarts() {
+		return carts;
+	}
+
+	public void setCarts(Set<Cart> carts) {
+		this.carts = carts;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, set, total);
+		return Objects.hash(carts, description, id, price);
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -47,12 +61,13 @@ public class Item {
 		if (getClass() != obj.getClass())
 			return false;
 		Item other = (Item) obj;
-		return Objects.equals(id, other.id) && Objects.equals(set, other.set) && Objects.equals(total, other.total);
+		return Objects.equals(carts, other.carts) && Objects.equals(description, other.description) && id == other.id
+				&& Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price);
 	}
+
 	@Override
 	public String toString() {
-		return "Item [id=" + id + ", total=" + total + ", set=" + set + "]";
-	} 
-	
+		return "Item [id=" + id + ", price=" + price + ", description=" + description + ", carts=" + carts + "]";
+	}
 	
 }

@@ -3,26 +3,19 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
 
 <hibernate-mapping>
-   <class name = "ua.lviv.lgs.hbm.xml.Item" table = "cart">
-      <id name = "id" type = "int" column = "id">
-         <generator class="increment"/>
-      </id>
-      
-      
-      <property name = "total" column = "total" type = "string"/>
-      <property name = "name" column = "name" type = "string"/>
-      
-      
-      <set name="Cart" table="item_cart" inverse="true" lazy="true" fetch="select" cascade="all">
-      <key>
-      <column name="item-id" not-null="true"></column>
-      </key>
-      <many-to-many entity-name="ua.lviv.lgs.hbm.xml.Cart">
-      	<column name="cart_id"></column>
-      </many-to-many>
-      
-      
-      </set>
-      
-   </class>
+   <class name="Item" table="ITEM">
+		<id name="id" type="long">
+			<column name="item_id" />
+			<generator class="identity" />
+		</id>
+		<property name="description" type="string" column="item_desc" />
+
+		<property name="price" type="double" column="item_price" />
+
+		<set name="carts" table="CART_ITEMS" fetch="select" cascade="all">
+			<key column="item_id" />
+			<many-to-many class="Cart" column="cart_id" />
+		</set>
+
+	</class>
 </hibernate-mapping>
